@@ -84,6 +84,17 @@ app.get("/order/:id", (req, res) => {
   res.send({ orderDetails: orderDetails });
 });
 
+// cancel order
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  if (username === "burger" && password === "pizza") {
+    res.send({ message: "Login successful" });
+  } else {
+    res.send({ message: "Invalid credentials" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
