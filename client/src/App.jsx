@@ -11,6 +11,7 @@ import Home from "./Home";
 import Stall from "./Stall";
 import Cart from "./Cart";
 import Order from "./Order";
+import OrderPlaced from "./OrderPlaced";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
       <Route path="/:stall" element={<Stall />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/order" element={<Order />} />
+      <Route path="/order/:id" element={<OrderPlaced />} />
     </Route>
   )
 );

@@ -44,10 +44,14 @@ function Cart() {
     <div>
       <h1>Cart</h1>
       <Card>
-        {cartItems.map((item) => {
+        {Object.keys(cartItems).map((item) => {
           return (
-            <div key={item}>
+            <div
+              key={item}
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Typography>{item}</Typography>
+              <Typography>{cartItems[item]}</Typography>
             </div>
           );
         })}
@@ -121,8 +125,7 @@ function Cart() {
               cart: cartItems,
             });
             if (res.status === 200) {
-              alert("Order placed!");
-              window.location.href = "/order";
+              window.location.href = "/order/" + res.data.orderId;
             } else {
               alert("Order not placed!");
             }

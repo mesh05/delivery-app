@@ -15,9 +15,17 @@ function Stall() {
   const [stallData, setStallData] = useRecoilState(stallDetailState);
   const cart = useRecoilValue(cartState);
   const navigate = useNavigate();
+  const cartItems = {};
 
   function handleNav() {
-    navigate("/cart", { state: { cart: cart } });
+    cart.map((item) => {
+      if (cartItems[item]) {
+        cartItems[item] += 1;
+      } else {
+        cartItems[item] = 1;
+      }
+    });
+    navigate("/cart", { state: { cart: cartItems } });
   }
 
   useEffect(() => {

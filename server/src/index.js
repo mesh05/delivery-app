@@ -36,6 +36,8 @@ const items = {
   ],
 };
 
+let placedOrders = [];
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -56,8 +58,30 @@ app.get("/:stall", (req, res) => {
 
 app.post("/placeOrder", (req, res) => {
   const { name, roll, phone, location } = req.body;
-  console.log(name, roll, phone, location);
-  res.send("Order placed!");
+  const orderId = Math.floor(Math.random() * 1000000 + 1);
+  // send it to database instead of logging
+  console.log(orderId, name, roll, phone, location);
+  placedOrders.push({
+    orderId: orderId,
+    name: name,
+    roll: roll,
+    phone: phone,
+    location: location,
+    cart: req.body.cart,
+  });
+  res.send({
+    orderId: orderId,
+    message: "Order placed!",
+  });
+});
+
+app.get("/order/:id", (req, res) => {
+  // database call
+  const orderDetails = placedOrders.find(
+    (order) => order.orderId == req.params.id
+  );
+  console.log(orderDetails);
+  res.send({ orderDetails: orderDetails });
 });
 
 app.listen(port, () => {
