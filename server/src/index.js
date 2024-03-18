@@ -57,18 +57,19 @@ app.get("/:stall", (req, res) => {
 });
 
 app.post("/placeOrder", (req, res) => {
+  // send stall name as well from front end
   const { name, roll, phone, location } = req.body;
   const orderId = Math.floor(Math.random() * 1000000 + 1);
   // send it to database instead of logging
   console.log(orderId, name, roll, phone, location);
-  placedOrders.push({
+  placedOrders = [...placedOrders,{
     orderId: orderId,
     name: name,
     roll: roll,
     phone: phone,
     location: location,
     cart: req.body.cart,
-  });
+  }];
   res.send({
     orderId: orderId,
     message: "Order placed!",
@@ -93,6 +94,25 @@ app.post("/login", (req, res) => {
   } else {
     res.send({ message: "Invalid credentials" });
   }
+});
+
+app.get("/stall/realtime_orders", function (req, res) {
+  // res.writeHead(200, {
+  //   Connection: "keep-alive",
+  //   "Content-Type": "text/event-stream",
+  //   "Cache-Control": "no-cache",
+  // });
+  // setInterval(() => {
+  //   res.write(
+  //     "data:" +
+  //       JSON.stringify({
+  //         orders: placedOrders,
+  //       })
+  //   );
+  //   res.write("\\n\\n");
+  // }, 10000);
+  // console.log(placedOrders)
+  res.send({placedOrders:placedOrders})
 });
 
 app.listen(port, () => {
