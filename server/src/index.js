@@ -1,8 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const server = require("http").createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 const port = 3000;
 const bodyParser = require("body-parser");
 
@@ -64,14 +69,21 @@ app.post("/placeOrder", (req, res) => {
   const orderId = Math.floor(Math.random() * 1000000 + 1);
   // send it to database instead of logging
   console.log(orderId, name, roll, phone, location);
-  placedOrders = [...placedOrders,{
-    orderId: orderId,
-    name: name,
-    roll: roll,
-    phone: phone,
-    location: location,
-    cart: req.body.cart,
-  }];
+  placedOrders = [
+    ...placedOrders,
+    {
+      orderId: orderId,
+      name: name,
+      roll: roll,
+      phone: phone,
+      location: location,
+      cart: req.body.cart,
+    },
+  ];
+  io.emit("new_order", { placedOrders: placedOrders });
+  // io.on("connection", (socket) => {
+  //   socket.emit("new_order", { placedOrders: placedOrders });
+  // });
   res.send({
     orderId: orderId,
     message: "Order placed!",
@@ -83,7 +95,6 @@ app.get("/order/:id", (req, res) => {
   const orderDetails = placedOrders.find(
     (order) => order.orderId == req.params.id
   );
-  console.log(orderDetails);
   res.send({ orderDetails: orderDetails });
 });
 
@@ -98,31 +109,18 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/stall/realtime_orders", function (req, res) {
-  // res.writeHead(200, {
-  //   Connection: "keep-alive",
-  //   "Content-Type": "text/event-stream",
-  //   "Cache-Control": "no-cache",
-  // });
-  // setInterval(() => {
-  //   res.write(
-  //     "data:" +
-  //       JSON.stringify({
-  //         orders: placedOrders,
-  //       })
-  //   );
-  //   res.write("\\n\\n");
-  // }, 10000);
-  // console.log(placedOrders)
-  res.send({placedOrders:placedOrders})
+app.get("/stall/orders", function (req, res) {
+  res.send({ placedOrders: placedOrders });
 });
 
-io.on('connection', (socket) => {
-  console.log('user connected');
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
-  });
-})
+io.on("connection", (socket) => {
+  console.log("a user connected: ", socket.id);
+  socket.emit("connected", { message: "Connected to server via socket" });
+});
+
+io.on("disconnect", (socket) => {
+  console.log("a user disconnected: ", socket.id);
+});
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

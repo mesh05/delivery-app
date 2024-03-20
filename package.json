@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "cd ./client && npm install && npm run build && cd ../stall && npm install && npm run build && cd ../server && npm install && npm start"
+  },
+  "packageManager": "npm@9.6.7"
+}

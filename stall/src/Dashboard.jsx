@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "@mui/material/Card";
 import { Button, Typography } from "@mui/material";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:3000");
 
 function Dashboard() {
   const [orders, setOrders] = useState([]);
+  const [text, setText] = useState("");
 
   // const updateOrders = (data) => {
   //   const parsedData = JSON.parse(data);
@@ -19,41 +22,50 @@ function Dashboard() {
   // };
 
   useEffect(() => {
+    // Have to hit api that makes DB calls for initial orders
+    socket.on("new_order", (data) => {
+      setOrders(data.placedOrders);
+    });
+    socket.on("order", (data) => {
+      setText(data.message);
+    });
     axios
-      .get("http://localhost:3000/stall/realtime_orders")
+      .get("http://localhost:3000/stall/orders")
       .then((response) => {
-        // console.log(response.data.placedOrders);
+        console.log(response.data.placedOrders);
         setOrders(response.data.placedOrders);
-        // const eventSource = new EventSource(`http://localhost:3000/stall/realtime_orders`);
-        // eventSource.onmessage = (e) => updateOrders(e.data);
-        // return () => {
-        //   eventSource.close();
-        // }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [socket]);
   return (
     <div>
       <h1>Dashboard</h1>
-      <ul>
-        {orders.map((order) => (
-          <Card key={order.id}>
-            <Typography variant="h5">Order ID: {order.orderId}</Typography>
-            <br></br>
-            <br></br>
-            <Button variant="contained" sx={{ backgroundColor: "green" }}>
-              delivered
-            </Button>
-            <br></br>
-            <br></br>
-            <Button variant="contained" sx={{ backgroundColor: "red" }}>
-              Cancel order
-            </Button>
-          </Card>
-        ))}
-      </ul>
+      {orders.map((order) => (
+        <Card key={order.id}>
+          <Typography variant="h5">Order ID: {order.orderId}</Typography>
+          <br></br>
+          <Typography variant="h5">Name: {order.name}</Typography>
+          <br></br>
+          <Button variant="contained" sx={{ backgroundColor: "green" }}>
+            delivered
+          </Button>
+          <br></br>
+          <br></br>
+          <Button variant="contained" sx={{ backgroundColor: "red" }}>
+            Cancel order
+          </Button>
+        </Card>
+      ))}
+      {/* <Button
+        onClick={() => {
+          socket.emit("order", { message: "hello" });
+        }}
+      >
+        Click
+      </Button> */}
+      {text}
     </div>
   );
 }
