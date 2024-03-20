@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 const port = 3000;
 const bodyParser = require("body-parser");
 
@@ -115,6 +117,13 @@ app.get("/stall/realtime_orders", function (req, res) {
   res.send({placedOrders:placedOrders})
 });
 
-app.listen(port, () => {
+io.on('connection', (socket) => {
+  console.log('user connected');
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  });
+})
+
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
