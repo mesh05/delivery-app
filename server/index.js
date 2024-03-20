@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const path = require('path');
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
@@ -13,6 +14,10 @@ const bodyParser = require("body-parser");
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static("public"));
+app.use("/*",(req,res) => {
+	res.sendFile(path.join(__dirname + "/public"))
+})
 
 const stalls = [
   "stall1",
@@ -45,17 +50,17 @@ const items = {
 
 let placedOrders = [];
 
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/stalls", (req, res) => {
+app.get("/api/stalls", (req, res) => {
   res.send({
     stalls: stalls,
   });
 });
 
-app.get("/:stall", (req, res) => {
+app.get("/api/:stall", (req, res) => {
   const stall = req.params.stall;
   res.send({
     stall: stall,
@@ -63,7 +68,7 @@ app.get("/:stall", (req, res) => {
   });
 });
 
-app.post("/placeOrder", (req, res) => {
+app.post("/api/placeOrder", (req, res) => {
   // send stall name as well from front end
   const { name, roll, phone, location } = req.body;
   const orderId = Math.floor(Math.random() * 1000000 + 1);
@@ -90,7 +95,7 @@ app.post("/placeOrder", (req, res) => {
   });
 });
 
-app.get("/order/:id", (req, res) => {
+app.get("/api/order/:id", (req, res) => {
   // database call
   const orderDetails = placedOrders.find(
     (order) => order.orderId == req.params.id
@@ -100,7 +105,7 @@ app.get("/order/:id", (req, res) => {
 
 // cancel order
 
-app.post("/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
   if (username === "burger" && password === "pizza") {
     res.send({ message: "Login successful" });
@@ -109,7 +114,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/stall/orders", function (req, res) {
+app.get("/api/stall/orders", function (req, res) {
   res.send({ placedOrders: placedOrders });
 });
 
