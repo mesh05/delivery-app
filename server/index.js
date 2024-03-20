@@ -9,14 +9,15 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+var router = new express.Router();
 const port = 3000;
 const bodyParser = require("body-parser");
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use("/",express.static("public"));
 app.use("/*",(req,res) => {
-	res.sendFile(path.join(__dirname + "/public"))
+	res.sendFile(path.join(__dirname + "/public/index.html"));
 })
 
 const stalls = [
