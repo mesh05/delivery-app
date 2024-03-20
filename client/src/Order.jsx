@@ -20,9 +20,7 @@ function Order() {
       <br></br>
       <Button
         onClick={async () => {
-          const res = await axios.get(
-            `http://localhost:3000/api/order/${orderId}`
-          );
+          const res = await axios.get(`host:3000/api/order/${orderId}`);
           if (res.status === 200) {
             window.location.href = "/order/" + orderId;
           } else {

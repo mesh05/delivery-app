@@ -118,7 +118,7 @@ function Cart() {
         <Button
           onClick={async () => {
             const res = await axios.post(
-              "http://localhost:3000/api/placeOrder",
+              "http://ruchulu.live:3000/api/placeOrder",
               {
                 name: name,
                 roll: roll,

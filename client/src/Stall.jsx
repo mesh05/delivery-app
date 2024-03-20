@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -29,7 +29,7 @@ function Stall() {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/${stall}`)
+    fetch(`http://ruchulu.live:3000/api/${stall}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

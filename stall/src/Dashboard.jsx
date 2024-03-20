@@ -30,7 +30,7 @@ function Dashboard() {
       setText(data.message);
     });
     axios
-      .get("http://localhost:3000/api/stall/orders")
+      .get("http://ruchulu.live:3000/api/stall/orders")
       .then((response) => {
         console.log(response.data.placedOrders);
         setOrders(response.data.placedOrders);
