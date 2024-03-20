@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "start": "node src/index.js",
     "start": "cd ../client && npm run build && rm -rf ../server/public && mkdir -p ../server/public && mv ./dist/* ../server/public && cd ../server && node index.js"
   },
   "dependencies": {

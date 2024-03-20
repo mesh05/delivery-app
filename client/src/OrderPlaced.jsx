@@ -6,7 +6,7 @@ function OrderPlaced() {
   const [orderDetails, setOrderDetails] = useState({});
   const orderId = useParams().id;
   useEffect(() => {
-    axios.get(`http://localhost:3000/order/${orderId}`).then((res) => {
+    axios.get(`http://localhost:3000/api/order/${orderId}`).then((res) => {
       console.log(res);
       setOrderDetails(res.data.orderDetails);
     });

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 function StallList() {
   const [stalls, setStalls] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3000/stalls")
+    fetch("http://localhost:3000/api/stalls")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

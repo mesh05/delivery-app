@@ -29,7 +29,7 @@ function Stall() {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:3000/${stall}`)
+    fetch(`http://localhost:3000/api/${stall}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

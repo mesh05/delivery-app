@@ -117,13 +117,16 @@ function Cart() {
         <br></br>
         <Button
           onClick={async () => {
-            const res = await axios.post("http://localhost:3000/placeOrder", {
-              name: name,
-              roll: roll,
-              phone: phone,
-              location: location,
-              cart: cartItems,
-            });
+            const res = await axios.post(
+              "http://localhost:3000/api/placeOrder",
+              {
+                name: name,
+                roll: roll,
+                phone: phone,
+                location: location,
+                cart: cartItems,
+              }
+            );
             if (res.status === 200) {
               window.location.href = "/order/" + res.data.orderId;
             } else {

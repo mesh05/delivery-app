@@ -51,7 +51,7 @@ export function SignIn() {
           <Button
             onClick={() => {
               axios
-                .post("http://localhost:3000/login", {
+                .post("http://localhost:3000/api/login", {
                   username: username,
                   password: password,
                 })
