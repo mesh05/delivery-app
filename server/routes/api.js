@@ -4,34 +4,34 @@ const { io } = require("../ws");
 
 const Order = require("../db");
 
-// const stalls = [
-//   "stall1",
-//   "stall2",
-//   "stall3",
-//   "stall4",
-//   "stall5",
-//   "stall7",
-//   "stall8",
-// ];
-// const items = {
-//   stall1: ["item1"],
-//   stall2: ["item1", "item2"],
-//   stall3: ["item1", "item2", "item3"],
-//   stall4: ["item1", "item2", "item3", "item4"],
-//   stall5: ["item1", "item2", "item3", "item4", "item5"],
-//   stall6: ["item1", "item2", "item3", "item4", "item5", "item6"],
-//   stall7: ["item1", "item2", "item3", "item4", "item5", "item6", "item7"],
-//   stall8: [
-//     "item1",
-//     "item2",
-//     "item3",
-//     "item4",
-//     "item5",
-//     "item6",
-//     "item7",
-//     "item8",
-//   ],
-// };
+ const stalls = [
+   "stall1",
+   "stall2",
+   "stall3",
+   "stall4",
+   "stall5",
+   "stall7",
+   "stall8",
+ ];
+ const items = {
+   stall1: ["item1"],
+   stall2: ["item1", "item2"],
+   stall3: ["item1", "item2", "item3"],
+   stall4: ["item1", "item2", "item3", "item4"],
+   stall5: ["item1", "item2", "item3", "item4", "item5"],
+   stall6: ["item1", "item2", "item3", "item4", "item5", "item6"],
+   stall7: ["item1", "item2", "item3", "item4", "item5", "item6", "item7"],
+   stall8: [
+     "item1",
+     "item2",
+     "item3",
+     "item4",
+     "item5",
+     "item6",
+     "item7",
+     "item8",
+   ],
+ };
 
 router.get("/", (req, res) => {
   res.send("Hello World!");
@@ -131,12 +131,12 @@ router.put("/orderCancelled", function (req, res) {
   });
 });
 
-// router.get("/:stall", (req, res) => {
-//   const stall = req.params.stall;
-//   res.send({
-//     stall: stall,
-//     items: items[stall],
-//   });
-// });
+router.get("/:stall", (req, res) => {
+   const stall = req.params.stall;
+   res.send({
+     stall: stall,
+     items: items[stall],
+   })
+});
 
 module.exports = router;
