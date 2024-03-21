@@ -131,12 +131,12 @@ router.put("/orderCancelled", function (req, res) {
   });
 });
 
-router.get("/:stall", (req, res) => {
-  const stall = req.params.stall;
-  res.send({
-    stall: stall,
-    items: items[stall],
-  });
-});
+// router.get("/:stall", (req, res) => {
+//   const stall = req.params.stall;
+//   res.send({
+//     stall: stall,
+//     items: items[stall],
+//   });
+// });
 
 module.exports = router;
