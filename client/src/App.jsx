@@ -17,8 +17,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/">
       <Route index element={<Home />} />
-      <Route path="stalls" element={<StallList />} />
-      <Route path="/:stall" element={<Stall />} />
+      <Route path="Stall" element={<Stall/>} />
+      <Route path="/" element={<Stall />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/order" element={<Order />} />
       <Route path="/order/:id" element={<OrderPlaced />} />
