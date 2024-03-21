@@ -20,7 +20,9 @@ function Order() {
       <br></br>
       <Button
         onClick={async () => {
-          const res = await axios.get(`host:3000/api/order/${orderId}`);
+          const res = await axios.get(
+            `https://ruchulu.live/api/order/${orderId}`
+          );
           if (res.status === 200) {
             window.location.href = "/order/" + orderId;
           } else {
@@ -30,7 +32,7 @@ function Order() {
         variant="contained"
         color="primary"
       >
-        Place Order
+        Check Order Details
       </Button>
     </div>
   );

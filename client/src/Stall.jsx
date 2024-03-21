@@ -1,18 +1,16 @@
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-// import CardMedia from "@mui/material/CardMedia";
+import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { cartState, stallDetailState } from "./recoil/atoms/atoms";
 
 function Stall() {
-  const { stall } = useParams();
-  const [stallData, setStallData] = useRecoilState(stallDetailState);
+  const stallData = useRecoilValue(stallDetailState);
   const cart = useRecoilValue(cartState);
   const navigate = useNavigate();
   const cartItems = {};
@@ -28,17 +26,23 @@ function Stall() {
     navigate("/cart", { state: { cart: cartItems } });
   }
 
-  useEffect(() => {
-    fetch(`https://ruchulu.live/api/${stall}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setStallData(data.items);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`https://ruchulu.live/api/${stall}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       setStallData(data.items);
+  //     });
+  // }, [setStallData, stall]);
   if (cart.length == 0) {
     return (
-      <div>
+      <div
+        style={{
+          paddingLeft: "10px",
+          paddingTop: "30px",
+          paddingBottom: "100px",
+        }}
+      >
         <Grid
           container
           spacing={{ xs: "auto", md: 3 }}
@@ -47,7 +51,7 @@ function Stall() {
           {stallData.map((item) => {
             return (
               <Grid item xs={3} key={item}>
-                <Item item={item} />
+                <Item img={item.image} price={item.price} name={item.name} />
               </Grid>
             );
           })}
@@ -56,7 +60,13 @@ function Stall() {
     );
   } else if (cart.length > 0) {
     return (
-      <div>
+      <div
+        style={{
+          paddingLeft: "10px",
+          paddingTop: "30px",
+          paddingBottom: "100px",
+        }}
+      >
         <Grid
           container
           spacing={{ xs: "auto", md: 3 }}
@@ -65,57 +75,90 @@ function Stall() {
           {stallData.map((item) => {
             return (
               <Grid item xs={3} key={item}>
-                <Item item={item} />
+                <Item img={item.image} price={item.price} name={item.name} />
               </Grid>
             );
           })}
         </Grid>
-        <Card sx={{ maxWidth: 345, height: 75 }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                cart:{cart.length}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                href="/cart"
-                onClick={() => {
-                  handleNav();
-                }}
-                size="small"
-              >
-                View Cart
-              </Button>
-            </CardActions>
+
+        <Paper
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            maxWidth: 500,
+            height: 75,
+            margin: "10px",
+            padding: "15px",
+          }}
+          elevation={3}
+        >
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <Typography gutterBottom variant="h5" component="div">
+              cart:{cart.length}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="div">
+              cart:{cart.length}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                handleNav();
+              }}
+            >
+              View Cart
+            </Button>
           </div>
-        </Card>
+        </Paper>
       </div>
     );
   }
 }
 
-function Item({ item }) {
+function Item(props) {
   const [cart, setCart] = useRecoilState(cartState);
   function handleClick(item) {
     setCart([...cart, item]);
   }
+  function handleRemove(name) {
+    let cnt = 0;
+    let c = cart.filter((items) => {
+      if (items === name) cnt += 1;
+      return items !== name || cnt >= 2;
+    });
+    setCart([...c]);
+  }
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      {/* <CardMedia sx={{ height: 140 }} image="" title={item} /> */}
+    <Card sx={{ maxWidth: 345, padding: "5px" }}>
+      <CardMedia sx={{ height: 200 }} image={props.img} title={props.name} />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {item}
+        <Typography gutterBottom variant="h6" component="div">
+          {props.name}
+        </Typography>
+        <Typography gutterBottom variant="h7" component="div">
+          ₹ {props.price}
         </Typography>
       </CardContent>
       <CardActions>
         <Button
+          variant="contained"
           onClick={() => {
-            handleClick(item);
+            handleClick(props.name);
           }}
           size="small"
         >
-          Add to cart
+          +
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            handleRemove(props.name);
+          }}
+          size="small"
+        >
+          -
         </Button>
       </CardActions>
     </Card>
