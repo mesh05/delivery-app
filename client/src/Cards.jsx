@@ -6,46 +6,50 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useRecoilState } from 'recoil';
-import { cartState, stallDetailState } from "./recoil/atoms/atoms";
+import { totalState,cartState, stallDetailState } from "./recoil/atoms/atoms";
 // import burger from "./burger.jpg"
 
 export default function Cards({items}) {
   let [cart, setCart] = useRecoilState(cartState);
-  function handleClick(name) {
-    setCart([...cart, name]);
+  const [total,setTotal] = useRecoilState(totalState)
+  function handleClick(item) {
+    setTotal(total+item.Price)
+    setCart([...cart, item.Name]);
   }
-  function handleRemove(name){
+  function handleRemove(item){
     let cnt = 0
-    cart = cart.filter((items)=>{
-      if(items==name)
+    let x = cart.length
+    cart = cart.filter((name)=>{
+      if(name==item.Name)
         cnt +=1
-      return items!=name || cnt>=2
+      return item.Name!=name || cnt>=2
     })
     console.log(cart)
     setCart([...cart])
+    if(x != cart.length)  
+    setTotal(total-item.Price)
   };
   return (
     <div>
     <Card sx={{ marginLeft:0,maxWidth: 345,padding:"5px" }}>
       <CardMedia
-        sx={{ height: 140 }}
+        sx={{ height: 160 ,width:250,marginLeft:5}}
         image= {items.image}
-        title="green iguana"
       />
-      <CardContent>
+      <CardContent style={{marginLeft:5}}>
         <Typography gutterBottom variant="h5" component="div">
         {items.Name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Price : {items.Price}
+          Price : {"Rs. "+items.Price}
         </Typography>
       </CardContent>
       <CardActions >
         <Button variant='outlined' size="medium" onClick={() => {
-          handleClick(items.Name)
+          handleClick(items)
         }}>+</Button>
         <Button variant='outlined' size="medium" onClick={() => {
-          handleRemove(items.Name)
+          handleRemove(items)
         }}>-</Button>
       </CardActions>
     </Card>

@@ -24,11 +24,18 @@ function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const handleNavbar = (page) =>{
+    if(page == 'Menu'){
+        scrollTo(1,1)
+    }
+    else{
+
+    }
+  }
   return (
-    <AppBar position="static" sx={{backgroundColor:"white"}}>
+    <AppBar position="static" sx={{backgroundColor:"white", borderRadius:"20px", border:".1em solid grey"}}>
       <Container maxWidth="xl" >
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -77,7 +84,7 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu} >
-                  <Typography textAlign="center" >{page}</Typography>
+                  <Typography textAlign="center" color="primary">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -104,8 +111,8 @@ function Navbar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={()=>handleNavbar(page)}
+                sx={{ my: 2,fontSize:"20px", color: 'red', display: 'block' }}
               >
                 {page}
               </Button>
