@@ -12,13 +12,33 @@ function OrderPlaced() {
     });
   }, []);
   return (
-    <div>
-      <h1>Order Placed</h1>
-      <h2>Order id: {orderDetails.orderId}</h2>
-      <h2>Name: {orderDetails.name}</h2>
-      <h2>Roll no: {orderDetails.roll}</h2>
-      <h2>Phone: {orderDetails.phone}</h2>
-      <h2>Location: {orderDetails.location}</h2>
+    <div style={{ display: "grid", justifyContent: "center" }}>
+      <div
+        style={{
+          width: "400px",
+          alignItems: "center",
+          padding: "1em",
+          margin: "1em",
+          borderRadius: "20px",
+          backgroundColor: "white",
+        }}
+      >
+        <h1>Order Placed</h1>
+        <h2>Order id: {orderDetails.orderId}</h2>
+        <h2>Name: {orderDetails.name}</h2>
+        <h2>Roll no: {orderDetails.roll}</h2>
+        <h2>Phone: {orderDetails.phone}</h2>
+        <h2>Location: {orderDetails.location}</h2>
+      </div>
+      <footer style={{ marginTop: "7em" }}>
+        <div class="footer-flex">
+          <div class="contact">
+            <h4>For any further details:</h4>
+            <p>Sai Shiva Mani: 8790046822</p>
+            <p>Prathamesh Sawant: 7989498965</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

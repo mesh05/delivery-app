@@ -3,39 +3,31 @@ import { atom, selector } from "recoil";
 const stallDetailState = atom({
   key: "stallDetailState", // unique ID (with respect to other atoms/selectors)
   default: [
-    { name: "Chicken Pizza", image: "/1.png", price: 200.0 },
-    { name: "Margherita", image: "/2.png", price: 180.0 },
-    { name: "Paneer Tikka Pizza", image: "/3.png", price: 200.0 },
-    { name: "Chicken Burger", image: "/4.png", price: 200.0 },
-    { name: "Veg Popular", image: "/5.png", price: 200.0 },
-    { name: "Salted Fries", image: "/6.png", price: 200.0 },
-    { name: "Peri Peri Fries", image: "/7.png", price: 200.0 },
+    { id: 1, Name: "Chicken Pizza", image: "/1.png", Price: 200.0 },
+    { id: 2, Name: "Margherita", image: "/2.png", Price: 180.0 },
     {
-      name: "Chicken Loaded Cheese Fries",
+      id: 3,
+      Name: "Paneer Tikka Pizza",
+      image: "/3.png",
+      Price: 200.0,
+    },
+    { id: 4, Name: "Chicken Burger", image: "/4.png", Price: 140.0 },
+    { id: 5, Name: "Veg Popular", image: "/5.png", Price: 130.0 },
+    { id: 6, Name: "Salted Fries", image: "/6.png", Price: 100.0 },
+    { id: 7, Name: "Peri Peri Fries", image: "/7.png", Price: 110.0 },
+    {
+      id: 8,
+      Name: "Chicken Loaded Cheese Fries",
       image: "/8.png",
-      price: 200.0,
+      Price: 180.0,
     },
     {
-      name: "Chicken Strips Supreme (4pcs)",
+      id: 9,
+      Name: "Chicken Strips Supreme",
       image: "/9.png",
-      price: 200.0,
+      Price: 120.0,
     },
-    {
-      name: "Backlog Combo (Chicken/Paneer Pizza + Fries + Coke)",
-      image: "/11.png",
-      price: 200.0,
-    },
-    {
-      name: "Bunk Combo (Chicken/Veg Burger + Fries + Coke)",
-      image: "/12.png",
-      price: 200.0,
-    },
-    {
-      name: "Stress Combo (Strips Supreme + Chicken cluckers)",
-      image: "/13.png",
-      price: 200.0,
-    },
-  ], // default value (aka initial value)
+  ],
 });
 
 const stallItemState = selector({
@@ -51,5 +43,8 @@ const cartState = atom({
   key: "cartState", // unique ID (with respect to other atoms/selectors)
   default: [], // default value (aka initial value)
 });
-
-export { stallDetailState, cartState, stallItemState };
+const totalState = atom({
+  key: "totalState", // unique ID (with respect to other atoms/selectors)
+  default: 0, // default value (aka initial value)
+});
+export { totalState, stallDetailState, cartState, stallItemState };

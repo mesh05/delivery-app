@@ -6,12 +6,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import StallList from "./StallList";
 import Home from "./Home";
 import Stall from "./Stall";
 import Cart from "./Cart";
 import Order from "./Order";
 import OrderPlaced from "./OrderPlaced";
+import Contact from "./Contact";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/cart" element={<Cart />} />
       <Route path="/order" element={<Order />} />
       <Route path="/order/:id" element={<OrderPlaced />} />
+      <Route path="/contact us" element={<Contact />} />
     </Route>
   )
 );
