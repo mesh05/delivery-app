@@ -114,7 +114,9 @@ router.put("/orderDelivered", function (req, res) {
         status: status,
       },
     }
-  );
+  ).then((order) => {
+    res.send({ message: "Order delivered", order: order });
+  });
 });
 
 router.put("/orderCancelled", function (req, res) {
@@ -126,7 +128,9 @@ router.put("/orderCancelled", function (req, res) {
         status: status,
       },
     }
-  );
+  ).then((order) => {
+    res.send({ message: "Order cancelled", order: order });
+  });
 });
 
 router.get("/:stall", (req, res) => {
