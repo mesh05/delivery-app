@@ -1,19 +1,12 @@
 const express = require("express");
-const app = express();
-const server = require("http").createServer(app);
+const app = require("./app");
 const path = require("path");
-// const io = require("./ws");
+const { io, server } = require("./ws");
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 const bodyParser = require("body-parser");
 var apiRouter = require("./routes/api");
-const { Server } = require("socket.io");
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
-});
 
 const port = 3000;
 app.use(cors());
@@ -27,11 +20,9 @@ app.use("/*", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("a user connected: ", socket.id);
-  socket.emit("connected", { message: "Connected to server via socket" });
-});
-
-io.on("disconnect", (socket) => {
-  console.log("a user disconnected: ", socket.id);
+  io.on("disconnect", (socket) => {
+    console.log("a user disconnected: ", socket.id);
+  });
 });
 
 server.listen(port, () => {

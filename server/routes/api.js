@@ -1,42 +1,37 @@
 const express = require("express");
 const router = express.Router();
-const server = require("http").createServer(router);
-const { Server } = require("socket.io");
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
-});
+const { io } = require("../ws");
 
 const Order = require("../db");
-const stalls = [
-  "stall1",
-  "stall2",
-  "stall3",
-  "stall4",
-  "stall5",
-  "stall7",
-  "stall8",
-];
-const items = {
-  stall1: ["item1"],
-  stall2: ["item1", "item2"],
-  stall3: ["item1", "item2", "item3"],
-  stall4: ["item1", "item2", "item3", "item4"],
-  stall5: ["item1", "item2", "item3", "item4", "item5"],
-  stall6: ["item1", "item2", "item3", "item4", "item5", "item6"],
-  stall7: ["item1", "item2", "item3", "item4", "item5", "item6", "item7"],
-  stall8: [
-    "item1",
-    "item2",
-    "item3",
-    "item4",
-    "item5",
-    "item6",
-    "item7",
-    "item8",
-  ],
-};
+
+ const stalls = [
+   "stall1",
+   "stall2",
+   "stall3",
+   "stall4",
+   "stall5",
+   "stall7",
+   "stall8",
+ ];
+ const items = {
+   stall1: ["item1"],
+   stall2: ["item1", "item2"],
+   stall3: ["item1", "item2", "item3"],
+   stall4: ["item1", "item2", "item3", "item4"],
+   stall5: ["item1", "item2", "item3", "item4", "item5"],
+   stall6: ["item1", "item2", "item3", "item4", "item5", "item6"],
+   stall7: ["item1", "item2", "item3", "item4", "item5", "item6", "item7"],
+   stall8: [
+     "item1",
+     "item2",
+     "item3",
+     "item4",
+     "item5",
+     "item6",
+     "item7",
+     "item8",
+   ],
+ };
 
 router.get("/", (req, res) => {
   res.send("Hello World!");
@@ -64,10 +59,7 @@ router.post("/placeOrder", (req, res) => {
   });
   newOrder.save().then((order) => {
     // send websocket message to stall frotend
-    io.on("connection", (socket) => {
-      socket.emit("new_order", { placedOrders: Order.find() });
-    });
-    console.log(order);
+    io.emit("new_order", { message: "New order placed", order });
   });
 
   res.send({
@@ -115,7 +107,10 @@ router.put("/orderDelivered", function (req, res) {
       },
     }
   ).then((order) => {
-    res.send({ message: "Order delivered", order: order });
+    io.emit("order_delivered", {
+      message: "Order delivered",
+      order: { orderId, status },
+    });
   });
 });
 
@@ -129,16 +124,19 @@ router.put("/orderCancelled", function (req, res) {
       },
     }
   ).then((order) => {
-    res.send({ message: "Order cancelled", order: order });
+    io.emit("order_cancelled", {
+      message: "Order cancelled",
+      order: { orderId, status },
+    });
   });
 });
 
 router.get("/:stall", (req, res) => {
-  const stall = req.params.stall;
-  res.send({
-    stall: stall,
-    items: items[stall],
-  });
+   const stall = req.params.stall;
+   res.send({
+     stall: stall,
+     items: items[stall],
+   })
 });
 
 module.exports = router;

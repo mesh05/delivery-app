@@ -3,51 +3,70 @@ import axios from "axios";
 import Card from "@mui/material/Card";
 import { Button, Typography } from "@mui/material";
 import io from "socket.io-client";
-const socket = io.connect("http://ruchulu.live:3000");
+const socket = io.connect("https://ruchulu.live");
 
 function Dashboard() {
   const [orders, setOrders] = useState([]);
-  const [text, setText] = useState("");
-
-  // const updateOrders = (data) => {
-  //   const parsedData = JSON.parse(data);
-  //   setOrders((orders) =>
-  //     [...orders].map((order) => {
-  //       if (order.id === parsedData.id) {
-  //         return parsedData;
-  //       }
-  //       return order;
-  //     })
-  //   );
-  // };
 
   useEffect(() => {
     // Have to hit api that makes DB calls for initial orders
-    socket.on("new_order", (data) => {
-      setOrders(data.placedOrders);
-    });
-    socket.on("order", (data) => {
-      setText(data.message);
-    });
     axios
       .get("https://ruchulu.live/api/stall/orders")
       .then((response) => {
-        console.log(response.data.placedOrders);
         setOrders(response.data.placedOrders);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [socket]);
+  }, []);
+
+  useEffect(() => {
+    socket.on("new_order", (data) => {
+      setOrders([...orders, data.order]);
+    });
+
+    socket.on("order_cancelled", (data) => {
+      console.log(data);
+      setOrders(
+        orders.map((order) => {
+          if (order.orderId === data.order.orderId) {
+            const new_data = { ...order, status: "cancelled" };
+            return new_data;
+          }
+          return order;
+        })
+      );
+    });
+
+    socket.on("order_delivered", (data) => {
+      console.log(data);
+      setOrders(
+        orders.map((order) => {
+          if (order.orderId === data.order.orderId) {
+            const new_data = { ...order, status: "delivered" };
+            return new_data;
+          }
+          return order;
+        })
+      );
+    });
+
+    // socket.on("order", (data) => {
+    //   setText(data.message);
+    // });
+  }, [orders]);
+
   return (
     <div>
       <h1>Dashboard</h1>
       {orders.map((order) => (
-        <Card key={order.id}>
+        <Card
+          key={order.id}
+          sx={{ width: "500px", margin: "10px", padding: "10px" }}
+        >
           <Typography variant="h5">Order ID: {order.orderId}</Typography>
           <br></br>
           <Typography variant="h5">Name: {order.name}</Typography>
-          <br></br>
           <br></br>
           <Typography variant="h5">Status: {order.status}</Typography>
           <br></br>
@@ -60,6 +79,20 @@ function Dashboard() {
                 })
                 .then((response) => {
                   console.log(response);
+                  socket.on("order_cancelled", (data) => {
+                    console.log(data);
+                    setOrders(
+                      orders.map((order) => {
+                        if (order.orderId === data.order.orderId) {
+                          return data.order;
+                        }
+                        return order;
+                      })
+                    );
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
                 });
             }}
             variant="contained"
@@ -90,14 +123,6 @@ function Dashboard() {
           </Button>
         </Card>
       ))}
-      {/* <Button
-        onClick={() => {
-          socket.emit("order", { message: "hello" });
-        }}
-      >
-        Click
-      </Button> */}
-      {text}
     </div>
   );
 }
