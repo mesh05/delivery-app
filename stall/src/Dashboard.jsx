@@ -3,7 +3,7 @@ import axios from "axios";
 import Card from "@mui/material/Card";
 import { Button, Typography } from "@mui/material";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("http://ruchulu.live:3000");
 
 function Dashboard() {
   const [orders, setOrders] = useState([]);
@@ -30,7 +30,7 @@ function Dashboard() {
       setText(data.message);
     });
     axios
-      .get("http://ruchulu.live:3000/api/stall/orders")
+      .get("https://ruchulu.live/api/stall/orders")
       .then((response) => {
         console.log(response.data.placedOrders);
         setOrders(response.data.placedOrders);

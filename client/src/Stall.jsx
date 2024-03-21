@@ -29,7 +29,7 @@ function Stall() {
   }
 
   useEffect(() => {
-    fetch(`http://ruchulu.live:3000/api/${stall}`)
+    fetch(`https://ruchulu.live/api/${stall}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
