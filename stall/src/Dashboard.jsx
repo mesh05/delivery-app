@@ -7,7 +7,6 @@ const socket = io.connect("https://ruchulu.live");
 
 function Dashboard() {
   const [orders, setOrders] = useState([]);
-  const [text, setText] = useState("");
 
   useEffect(() => {
     // Have to hit api that makes DB calls for initial orders
@@ -28,49 +27,73 @@ function Dashboard() {
 
     socket.on("order_cancelled", (data) => {
       console.log(data);
-      // setOrders(
-      //   orders.map((order) => {
-      //     if (order.orderId === data.order.orderId) {
-      //       return data.order;
-      //     }
-      //     return order;
-      //   })
-      // );
+      setOrders(
+        orders.map((order) => {
+          if (order.orderId === data.order.orderId) {
+            const new_data = { ...order, status: "cancelled" };
+            return new_data;
+          }
+          return order;
+        })
+      );
     });
 
     socket.on("order_delivered", (data) => {
       console.log(data);
-      // setOrders(
-      //   orders.map((order) => {
-      //     if (order.orderId === data.order.orderId) {
-      //       return data.order;
-      //     }
-      //     return order;
-      //   })
-      // );
+      setOrders(
+        orders.map((order) => {
+          if (order.orderId === data.order.orderId) {
+            const new_data = { ...order, status: "delivered" };
+            return new_data;
+          }
+          return order;
+        })
+      );
     });
+
     // socket.on("order", (data) => {
     //   setText(data.message);
     // });
   }, [orders]);
+
   return (
     <div>
       <h1>Dashboard</h1>
       {orders.map((order) => (
-        <Card key={order.id}>
+        <Card
+          key={order.id}
+          sx={{ width: "500px", margin: "10px", padding: "10px" }}
+        >
           <Typography variant="h5">Order ID: {order.orderId}</Typography>
           <br></br>
           <Typography variant="h5">Name: {order.name}</Typography>
-          <br></br>
           <br></br>
           <Typography variant="h5">Status: {order.status}</Typography>
           <br></br>
           <Button
             onClick={() => {
-              socket.emit("order_delivered", {
-                orderId: order.orderId,
-                status: "delivered",
-              });
+              axios
+                .put("https://ruchulu.live/api/orderDelivered", {
+                  orderId: order.orderId,
+                  status: "delivered",
+                })
+                .then((response) => {
+                  console.log(response);
+                  socket.on("order_cancelled", (data) => {
+                    console.log(data);
+                    setOrders(
+                      orders.map((order) => {
+                        if (order.orderId === data.order.orderId) {
+                          return data.order;
+                        }
+                        return order;
+                      })
+                    );
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             }}
             variant="contained"
             sx={{ backgroundColor: "green" }}
@@ -100,14 +123,6 @@ function Dashboard() {
           </Button>
         </Card>
       ))}
-      {/* <Button
-        onClick={() => {
-          socket.emit("order", { message: "hello" });
-        }}
-      >
-        Click
-      </Button> */}
-      {text}
     </div>
   );
 }
