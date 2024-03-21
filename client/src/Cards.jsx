@@ -10,13 +10,18 @@ import { cartState, stallDetailState } from "./recoil/atoms/atoms";
 // import burger from "./burger.jpg"
 
 export default function Cards({items}) {
-  const [stallData,setStallData] = useRecoilState(stallDetailState);
-  const [cart, setCart] = useRecoilState(cartState);
-  function handleClick(items) {
-    setCart([...cart, items]);
+  let [cart, setCart] = useRecoilState(cartState);
+  function handleClick(name) {
+    setCart([...cart, name]);
   }
-  function handleRemove(items){
-    cart.pop(items)
+  function handleRemove(name){
+    let cnt = 0
+    cart = cart.filter((items)=>{
+      if(items==name)
+        cnt +=1
+      return items!=name || cnt>=2
+    })
+    console.log(cart)
     setCart([...cart])
   };
   return (

@@ -11,7 +11,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { cartState, stallDetailState } from "./recoil/atoms/atoms";
 import Cards from './Cards'
 function Stall() {
-  const [stallData, setStallData] = useRecoilState(stallDetailState);
+  const stallData  = useRecoilValue(stallDetailState);
   const cart = useRecoilValue(cartState);
   const navigate = useNavigate();
   const cartItems = {};
@@ -36,7 +36,7 @@ function Stall() {
         >
           {stallData.map((item) => {
             return (
-              <Grid item xs={3} key={item} margin >
+              <Grid item xs={3} key={item.id} margin >
                 <Cards items = {item}/>
               </Grid>
             );
@@ -52,9 +52,9 @@ function Stall() {
           spacing={{ xs: "auto", md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {cart.map((item) => {
+          {stallData.map((item) => {
             return (
-              <Grid item xs={3} key={item} margin>
+              <Grid item xs={3} key={item.id} margin>
                 <Cards items = {item}/>
               </Grid>
             );
