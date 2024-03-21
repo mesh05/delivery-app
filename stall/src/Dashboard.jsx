@@ -48,12 +48,47 @@ function Dashboard() {
           <br></br>
           <Typography variant="h5">Name: {order.name}</Typography>
           <br></br>
-          <Button variant="contained" sx={{ backgroundColor: "green" }}>
+          <br></br>
+          <Typography variant="h5">Status: {order.status}</Typography>
+          <br></br>
+          <Button
+            onClick={() => {
+              axios
+                .put("https://ruchulu.live/api/orderDelivered", {
+                  orderId: order.orderId,
+                  status: "delivered",
+                })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }}
+            variant="contained"
+            sx={{ backgroundColor: "green" }}
+          >
             delivered
           </Button>
           <br></br>
           <br></br>
-          <Button variant="contained" sx={{ backgroundColor: "red" }}>
+          <Button
+            onClick={() => {
+              axios
+                .put("https://ruchulu.live/api/orderCancelled", {
+                  orderId: order.orderId,
+                  status: "cancelled",
+                })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }}
+            variant="contained"
+            sx={{ backgroundColor: "red" }}
+          >
             Cancel order
           </Button>
         </Card>

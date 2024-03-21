@@ -113,4 +113,28 @@ router.get("/stall/orders", function (req, res) {
   });
 });
 
+router.put("/orderDelivered", function (req, res) {
+  const { orderId, status } = req.body;
+  Order.updateOne(
+    { orderId: orderId },
+    {
+      $set: {
+        status: status,
+      },
+    }
+  );
+});
+
+router.put("/orderCancelled", function (req, res) {
+  const { orderId, status } = req.body;
+  Order.updateOne(
+    { orderId: orderId },
+    {
+      $set: {
+        status: status,
+      },
+    }
+  );
+});
+
 module.exports = router;
