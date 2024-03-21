@@ -29,6 +29,9 @@ function Cart() {
   const [roll, setRoll] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
+  const [NameState,setState] = useState(false)
+  const [RollState,setStateR] = useState(false)
+  const [PhoneState,setStateP] = useState(false)
   //   const [cart, setCart] = useRecoilState(cartState);
   //   setCart(cartItems);
   //   if ("caches" in window) {
@@ -52,12 +55,21 @@ function Cart() {
           id="outlined-basic"
           label="Name"
           variant="outlined"
+
           required = {true}
           onChange={(event) => {
-            setName(event.target.value);
+            const reg = /^[a-zA-Z]+$/;
+            if (event.target.value.match(reg)) 
+            {  setName(event.target.value);
+              setState(false)
+            }else{
+              setState(true)
+            }
+
           }}  
         />
-        <br></br>
+        <br />
+        {(NameState)?<span style={{display:"inline",fontSize:"15px",margin:0, color:"red", font:"small-caption"}}>*Enter Valid Name <br /> </span>:<span></span>}
         <br></br>
         <TextField
           id="outlined-basic"
@@ -65,10 +77,17 @@ function Cart() {
           variant="outlined"
           required = {true}
           onChange={(event) => {
-            setRoll(event.target.value);
+            const reg = /^[0-9a-zA-Z]+$/;
+            if (event.target.value.match(reg)) 
+            {  setRoll(event.target.value);
+              setStateR(false)
+            }else{
+              setStateR(true)
+            }
           }}
         />
         <br></br>
+        {(RollState)?<span style={{display:"inline",fontSize:"15px",margin:0, color:"red", font:"small-caption"}}>*Enter Valid Roll Number <br /> </span>:<span></span>}
         <br></br>
         <TextField
           id="outlined-basic"
@@ -77,10 +96,17 @@ function Cart() {
           variant="outlined"
           required = {true}
           onChange={(event) => {
-            setPhone(event.target.value);
+            const reg = /^[9|6|8|7][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/;
+            if (event.target.value.match(reg)) 
+            {  setPhone(event.target.value);
+              setStateP(false)
+            }else{
+              setStateP(true)
+            }
           }}
         />
         <br></br>
+        {(PhoneState)?<span style={{display:"inline",fontSize:"15px",margin:0, color:"red", font:"small-caption"}}>*Enter Valid Phone Number <br /> </span>:<span></span>}
         <br></br>
         <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="demo-simple-select-standard-label">
@@ -110,6 +136,10 @@ function Cart() {
         <br></br>
         <Button
           onClick={async () => {
+            if(NameState||RollState||PhoneState){
+              alert("Please provide Valid information")
+              return
+            }
             if(name == ""){
               alert("Please provide Name");
               return 
