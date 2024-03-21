@@ -7,6 +7,8 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+
+const Order = require("../db");
 const stalls = [
   "stall1",
   "stall2",
@@ -36,8 +38,6 @@ const items = {
   ],
 };
 
-let placedOrders = [];
-
 router.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -60,23 +60,24 @@ router.post("/placeOrder", (req, res) => {
   // send stall name as well from front end
   const { name, roll, phone, location } = req.body;
   const orderId = Math.floor(Math.random() * 1000000 + 1);
-  // send it to database instead of logging
-  console.log(orderId, name, roll, phone, location);
-  placedOrders = [
-    ...placedOrders,
-    {
-      orderId: orderId,
-      name: name,
-      roll: roll,
-      phone: phone,
-      location: location,
-      cart: req.body.cart,
-    },
-  ];
-  io.emit("new_order", { placedOrders: placedOrders });
-  // io.on("connection", (socket) => {
-  //   socket.emit("new_order", { placedOrders: placedOrders });
-  // });
+  // console.log(orderId, name, roll, phone, location);
+  const newOrder = new Order({
+    orderId,
+    name,
+    roll,
+    phone,
+    location,
+    cart: req.body.cart,
+    status: "pending",
+  });
+  newOrder.save().then((order) => {
+    // send websocket message to stall frotend
+    io.on("connection", (socket) => {
+      socket.emit("new_order", { placedOrders: Order.find() });
+    });
+    console.log(order);
+  });
+
   res.send({
     orderId: orderId,
     message: "Order placed!",
@@ -85,13 +86,17 @@ router.post("/placeOrder", (req, res) => {
 
 router.get("/order/:id", (req, res) => {
   // database call
-  const orderDetails = placedOrders.find(
-    (order) => order.orderId == req.params.id
-  );
-  res.send({ orderDetails: orderDetails });
+  Order.findOne({ orderId: req.params.id }).then((order) => {
+    if (order) {
+      res.send({ orderDetails: order });
+    } else {
+      res.send({ message: "Order not found" });
+    }
+  });
 });
 
-// cancel order
+// canceled order
+// delivered order
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -103,7 +108,9 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/stall/orders", function (req, res) {
-  res.send({ placedOrders: placedOrders });
+  Order.find().then((orders) => {
+    res.send({ placedOrders: orders });
+  });
 });
 
 module.exports = router;

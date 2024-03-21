@@ -1,18 +1,21 @@
 const express = require("express");
-const cors = require("cors");
 const app = express();
-const path = require("path");
 const server = require("http").createServer(app);
+const path = require("path");
+// const io = require("./ws");
+const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
+const bodyParser = require("body-parser");
+var apiRouter = require("./routes/api");
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
     origin: "*",
   },
 });
-const bodyParser = require("body-parser");
-var apiRouter = require("./routes/api");
-const port = 3000;
 
+const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
