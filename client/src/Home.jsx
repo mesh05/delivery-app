@@ -4,7 +4,7 @@ function Home() {
     <div>
       <section className="header">
         <div className="image-container">
-          <img src="src/assets/burger.jpg" alt="pizza-burger" />
+          <img src="/burger.jpg" alt="pizza-burger" />
           <div className="box">
             <div className="content">
               <h2>Delicious Pizzas and Burgers for College Events</h2>
@@ -24,7 +24,7 @@ function Home() {
       <section className="services">
         <h3>Services</h3>
         <div className="services-flex">
-          <img src="/src/assets/delivery.png" alt="" />
+          <img src="/delivery.png" alt="" />
           <div className="services-right">
             <h4>
               Craving Foodies? <br />
