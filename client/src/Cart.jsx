@@ -21,6 +21,7 @@ function Cart() {
     "3rd Block",
     "1st Block",
     "Refreshment Center",
+    "Cricket Ground Gate",
   ];
   const cartItems = useLocation().state.cart;
   const total = useLocation().state.total;

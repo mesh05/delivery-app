@@ -68,7 +68,34 @@ function Dashboard() {
           <br></br>
           <Typography variant="h5">Name: {order.name}</Typography>
           <br></br>
-          <Typography variant="h5">Status: {order.status}</Typography>
+          <Typography variant="h5">Roll: {order.roll}</Typography>
+          <br></br>
+          <Status status={order.status}></Status>
+          <br></br>
+          <Typography variant="h5">Number: {order.phone}</Typography>
+          <br></br>
+          <Typography variant="h5">Location: {order.location}</Typography>
+          <br></br>
+          {/* {order.cart.map((item) => {
+            return (
+              <div key={item.id}>
+                <Typography variant="h5">
+                  {item.name} - {item.quantity}
+                </Typography>
+              </div>
+            );
+          })} */}
+          <Typography variant="h5">Cart:</Typography>
+          {Object.keys(order.cart).map((key) => {
+            return (
+              <div key={key}>
+                <Typography variant="h6">
+                  {key} - {order.cart[key]}
+                </Typography>
+              </div>
+            );
+          })}
+          <br></br>
           <br></br>
           <Button
             onClick={() => {
@@ -125,6 +152,30 @@ function Dashboard() {
       ))}
     </div>
   );
+}
+
+function Status({ status }) {
+  if (status === "pending") {
+    return (
+      <Typography sx={{ color: "orange" }} variant="h5">
+        Status: pending
+      </Typography>
+    );
+  }
+  if (status === "delivered") {
+    return (
+      <Typography sx={{ color: "green" }} variant="h5">
+        Status: delivered
+      </Typography>
+    );
+  }
+  if (status === "cancelled") {
+    return (
+      <Typography sx={{ color: "red" }} variant="h5">
+        Status: cancelled
+      </Typography>
+    );
+  }
 }
 
 export default Dashboard;
