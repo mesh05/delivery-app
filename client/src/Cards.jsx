@@ -6,11 +6,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
 import { totalState, cartState, stallDetailState } from "./recoil/atoms/atoms";
+import { useState } from "react";
 // import burger from "./burger.jpg"
 
 export default function Cards({ items }) {
   let [cart, setCart] = useRecoilState(cartState);
   const [total, setTotal] = useRecoilState(totalState);
+  const [itemQuantity, setItemQuantity] = useState(0);
   function handleClick(item) {
     setTotal(total + item.Price);
     setCart([...cart, item.Name]);
@@ -41,11 +43,15 @@ export default function Cards({ items }) {
           <Typography gutterBottom variant="h7" component="div">
             ₹ {items.Price}
           </Typography>
+          <Typography gutterBottom variant="h7" component="div">
+            Qty {itemQuantity}
+          </Typography>
         </CardContent>
         <CardActions>
           <Button
             variant="contained"
             onClick={() => {
+              setItemQuantity(itemQuantity + 1);
               handleClick(items);
             }}
             size="small"
@@ -55,6 +61,8 @@ export default function Cards({ items }) {
           <Button
             variant="contained"
             onClick={() => {
+              if (itemQuantity == 0) return;
+              setItemQuantity(itemQuantity - 1);
               handleRemove(items);
             }}
             size="small"
