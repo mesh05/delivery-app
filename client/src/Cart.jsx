@@ -178,7 +178,11 @@ function Cart() {
 
           <br></br>
           <br></br>
-          <Button
+          <Typography sx={{ fontWeight: "bold" }}>
+            You will be able to place orders when the stall starts. A button
+            will appear instead of this text
+          </Typography>
+          {/* <Button
             onClick={async () => {
               if (NameState || RollState || PhoneState) {
                 alert("Please provide Valid information");
@@ -218,7 +222,7 @@ function Cart() {
             color="primary"
           >
             Place Order
-          </Button>
+          </Button> */}
         </div>
         <Card style={{ width: "400px", marginLeft: "1em", padding: "20px" }}>
           <div
