@@ -65,4 +65,9 @@ const totalState = atom({
   key: "totalState", // unique ID (with respect to other atoms/selectors)
   default: 0, // default value (aka initial value)
 });
-export { totalState, stallDetailState, cartState, stallItemState };
+
+const qtyState = atom({
+  key: "totalState", // unique ID (with respect to other atoms/selectors)
+  default: 0, // default value (aka initial value)
+});
+export { totalState, stallDetailState, cartState, stallItemState, qtyState };

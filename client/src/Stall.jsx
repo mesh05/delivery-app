@@ -26,9 +26,6 @@ function Stall() {
   if (cart.length == 0) {
     return (
       <div style={{ marginBottom: "100px" }}>
-        <Typography sx={{ margin: "10px", fontWeight: "bold" }} variant="h4">
-          Crispy Crave Oasis
-        </Typography>
         <Grid
           container
           spacing={{ xs: "auto", md: 3 }}

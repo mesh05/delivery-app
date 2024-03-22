@@ -5,7 +5,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useRecoilState } from "recoil";
-import { totalState, cartState, stallDetailState } from "./recoil/atoms/atoms";
+import {
+  totalState,
+  cartState,
+  stallDetailState,
+  qtyState,
+} from "./recoil/atoms/atoms";
 import { useState } from "react";
 // import burger from "./burger.jpg"
 
