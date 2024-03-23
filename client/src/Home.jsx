@@ -1,14 +1,7 @@
-import { Typography } from "@mui/material";
 import "./Home.css";
-import Marquee from "react-fast-marquee";
 function Home() {
   return (
     <div>
-      <Marquee>
-        <Typography variant="h3" sx={{ color: "red", fontWeight: "bold" }}>
-          Delivery available at Cricket Ground Entrance
-        </Typography>
-      </Marquee>
       <section className="header">
         <div className="image-container">
           <img src="/burger.jpg" alt="pizza-burger" />
